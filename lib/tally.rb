@@ -34,7 +34,7 @@ module Tally
       end
 
       DataMapper.finalize
-      DataMapper.setup(:default, "sqlite3:#{File.expand_path(File.join(File.dirname(__FILE__), ".."))}/db/tally.db")
+      DataMapper.setup(:default, ENV['DATABASE_URL'])
       DataMapper.auto_upgrade!
 
       def update_count(user,email)
