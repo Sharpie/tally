@@ -10,7 +10,7 @@ contributed the most updates and edits to tickets.
 
 Assumes the Redmine instance has the plugin:
 
-    https://github.com/7citylearning/updates_notifier
+    https://github.com/Sharpie/redmine_updates_notifier
 
 With the target URL for updates to set to the Tally server, for example:
 
@@ -20,43 +20,50 @@ With the target URL for updates to set to the Tally server, for example:
 Requirements
 ------------
 
-* `json`
-* `data_mapper`
-* `dm-sqlite-adapter`
-* `dm-adjust`
-* `sinatra`
+See the [Gemfile](Gemfile).
 
-If you want to run the tally-submit testing tool you also need:
+Deployment to Heroku
+--------------------
 
-* `httpclient`
+1.  After cloning this repository, run:
 
-Installation & Usage
--------------------
+        heroku create
+        heroku addons:add heroku-postgresql:dev
 
-1.  Install the required gems on the server
+2. The last command will return a database name that looks like `HEROKU_POSTGRES_SOMECOLOR`.
+   Promote this database so that it is set in the environment as `DATABASE_URL`:
 
-        $ sudo gem install json sinatra data_mapper dm-sqlite-adapter dm-adjust
+        heroku pg:promote HEROKU_POSTGRES_SOMECOLOR
+
+Local Development
+-----------------
+
+Look at [.ruby-version](.ruby-version) and ensure you have the same version of ruby installed through rbenv, rvm or some other means.
+Also, ensure bundler is installed.
+
+1.  Set up the local environment using bundler:
+
+        bundle install --path=vendor
 
 2.  Run the Tally server:
 
-        $ bin/tally
+        bundle exec foreman start -e dev.env
 
-    This will run tally from the in-built Sinatra 
-    webserver. The tally directory also contains a `config.ru`
-    file you can use with `rackup` if required.
+    This will run tally from the in-built Sinatra webserver as configured in `config.ru`.
+    An in-memory SQLite3 database will be used as defined in the file `dev.env`.
 
-3.  Browse to the Tally server at http://example.com:4567
+3.  Browse to the Tally server at http://localhost:5000
 
 4.  You can test the submission of events using the tally-submit
     command like so:
 
-        $ tally-submit --server=http://example.com:4567/tally \
-        --first=James --last=Turnbull --email=james@lovedthanlost.net
+        bundle exec bin/tally-submit --server=http://localhost:5000/tally --first=Test --last=User --email=test@nodomain
 
-Author
-------
+Authors
+-------
 
 James Turnbull <james@lovedthanlost.net>
+Charlie Sharpsteen <chuck@puppetlabs.com>
 
 License
 -------
