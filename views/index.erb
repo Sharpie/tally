@@ -12,7 +12,7 @@
   <tr>
     <td class="mt">Rank</td>
     <td class="mt">User</td>
-    <td class="mt">Email</td>
+    <td class="mt">JIRA ID</td>
     <td class="mt">Score</td>
   </tr>
   <% i = 0 %>
@@ -21,7 +21,7 @@
     <tr class="<%= cycle %>">
         <td><a href=/user/<%= user["id"] %>><%= i %></a></td>
         <td><a href=/user/<%= user["id"] %>><%= user["user"] %></a></td>
-        <td><a href=/user/<%= user["id"] %>><%= user["email"] %></a></td>
+        <td><a href=/user/<%= user["id"] %>><%= user["login"] %></a></td>
         <td><a href=/user/<%= user["id"] %>><%= user["count"] %></a></td>
       </tr>
   <% end %>

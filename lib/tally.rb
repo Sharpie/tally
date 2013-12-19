@@ -29,7 +29,7 @@ module Tally
 
         property :id, Serial
         property :user, String, :key => true, :unique => true
-        property :email, String, :key => true, :unique => true
+        property :login, String, :key => true, :unique => true
         property :count, Integer
       end
 
@@ -37,8 +37,8 @@ module Tally
       DataMapper.setup(:default, ENV['DATABASE_URL'])
       DataMapper.auto_upgrade!
 
-      def update_count(user,email)
-        @users = User.first_or_create(:user => user, :email => email).adjust!(:count => +1)
+      def update_count(user, login)
+        @users = User.first_or_create(:user => user, :login => login).adjust!(:count => +1)
       end
 
       get '/' do
@@ -53,10 +53,10 @@ module Tally
 
       post '/tally/?' do
         session = JSON.parse(request.body.read)
-        user = session["user"]
-        person = "#{user["firstname"]} #{user["lastname"]}"
-        email = user["email"]
-        update_count(person,email)
+        user = session['user']
+        person = user['displayName']
+        username = user['name']
+        update_count(person, username)
       end
 
     end
